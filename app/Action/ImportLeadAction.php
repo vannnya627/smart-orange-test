@@ -10,7 +10,7 @@ use App\Tasks\UpsertLeadBatchTask;
 
 final readonly class ImportLeadAction
 {
-    private const int CHUNK_SIZE = 2000;
+    private const int CHUNK_SIZE = 1000;
 
     public function __construct(
         private XLSXGenerator $generator,
@@ -21,6 +21,7 @@ final readonly class ImportLeadAction
     public function run(string $fullPath): void
     {
         $batch = [];
+        /** @var array<string, string> $item */
         foreach ($this->generator->run($fullPath) as $item) {
             $leadData = $this->prepareLeadDataTask->run($item);
 
@@ -28,8 +29,10 @@ final readonly class ImportLeadAction
                 continue;
             }
 
+            /** @var string|int $extId */
+            $extId = $leadData['external_id'];
             /** @var array<string, array<string, ?mixed>> $batch */
-            $batch[$leadData['external_id']] = $leadData;
+            $batch[(string) $extId] = $leadData;
 
             if (count($batch) >= self::CHUNK_SIZE) {
                 $this->upsertLeadBatchTask->run($batch);

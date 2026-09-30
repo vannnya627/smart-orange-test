@@ -8,6 +8,10 @@ use Illuminate\Support\Carbon;
 
 final readonly class PrepareLeadDataTask
 {
+    /**
+     * @param  array<string, mixed>  $item
+     * @return array<string, mixed>|null
+     */
     public function run(array $item): ?array
     {
         $now = now()->format('Y-m-d H:i:s');
@@ -21,7 +25,7 @@ final readonly class PrepareLeadDataTask
             'external_id' => $extId,
             'first_name' => $item['first_name'] ?: null,
             'last_name' => $item['last_name'] ?: null,
-            'phone' => ! empty($item['phone']) ? ltrim($item['phone'], '=+') : null,
+            'phone' => ! empty($item['phone']) && is_scalar($item['phone']) ? ltrim((string) $item['phone'], '=+') : null,
             'email' => $item['email'] ?: null,
             'city' => $item['city'] ?: null,
             'source' => $item['source'] ?: null,
@@ -37,9 +41,9 @@ final readonly class PrepareLeadDataTask
         ];
     }
 
-    private function parseExcelDate(?string $value): ?string
+    private function parseExcelDate(mixed $value): ?string
     {
-        if (empty($value)) {
+        if (empty($value) || ! is_scalar($value)) {
             return null;
         }
 
@@ -50,7 +54,7 @@ final readonly class PrepareLeadDataTask
         }
 
         try {
-            return Carbon::parse($value)->format('Y-m-d H:i:s');
+            return Carbon::parse((string) $value)->format('Y-m-d H:i:s');
         } catch (\Throwable) {
             return null;
         }

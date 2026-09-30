@@ -9,9 +9,12 @@ use App\Repositories\Interfaces\LeadRepositoryInterface;
 
 final readonly class LeadRepository implements LeadRepositoryInterface
 {
+    /**
+     * @param  array<string, array<string, mixed>>  $batch
+     */
     public function upsertBatch(array $batch): void
     {
-        Lead::upsert(
+        Lead::query()->upsert(
             array_values($batch),
             ['external_id'],
             [

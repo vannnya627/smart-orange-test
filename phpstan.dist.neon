@@ -1,0 +1,9 @@
+includes:
+parameters:
+    level: 10
+    paths:
+        #- bin/
+        #- config/
+        #- public/
+        - app/
+        #- tests/

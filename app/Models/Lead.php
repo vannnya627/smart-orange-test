@@ -21,7 +21,7 @@ use Illuminate\Database\Eloquent\Model;
     'manager',
     'comment',
     'next_contact_at', )]
-class Lead extends Model
+final class Lead extends Model
 {
     /**
      * @return array<string, string>

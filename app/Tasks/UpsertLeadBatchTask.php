@@ -12,6 +12,9 @@ final readonly class UpsertLeadBatchTask
         private LeadRepositoryInterface $leadRepository,
     ) {}
 
+    /**
+     * @param  array<string, array<string, mixed>>  $batch
+     */
     public function run(array $batch): void
     {
         $this->leadRepository->upsertBatch($batch);

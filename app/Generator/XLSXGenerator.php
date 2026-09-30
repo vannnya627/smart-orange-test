@@ -53,11 +53,15 @@ final readonly class XLSXGenerator
             while ($sheetXml->read()) {
                 if ($sheetXml->nodeType === XMLReader::ELEMENT && $sheetXml->name === 'row') {
                     $rowXml = simplexml_load_string($sheetXml->readOuterXml());
+                    if ($rowXml === false) {
+                        continue;
+                    }
+
                     $rowData = [];
 
                     foreach ($rowXml->c as $cell) {
                         $ref = (string) $cell['r'];
-                        $col = preg_replace('/[0-9]/', '', $ref);
+                        $col = (string) preg_replace('/[0-9]/', '', $ref);
                         $type = (string) $cell['t'];
                         $val = (string) $cell->v;
 

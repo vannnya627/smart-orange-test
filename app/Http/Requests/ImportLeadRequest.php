@@ -33,6 +33,12 @@ final class ImportLeadRequest extends FormRequest
 
     public function getFile(): UploadedFile
     {
-        return $this->file('import_file') ?? throw new RuntimeException('File not found');
+        $file = $this->file('import_file');
+
+        if (! $file instanceof UploadedFile) {
+            throw new RuntimeException('File not found or invalid');
+        }
+
+        return $file;
     }
 }
