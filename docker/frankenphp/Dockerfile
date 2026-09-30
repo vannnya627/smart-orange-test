@@ -14,6 +14,10 @@ RUN install-php-extensions \
     pcov \
     @composer
 
+RUN cp $PHP_INI_DIR/php.ini-production $PHP_INI_DIR/php.ini && \
+    echo "upload_max_filesize = 50M" > $PHP_INI_DIR/conf.d/custom-uploads.ini && \
+    echo "post_max_size = 50M" >> $PHP_INI_DIR/conf.d/custom-uploads.ini
+
 WORKDIR /app
 
 RUN usermod -u 1000 www-data && groupmod -g 1000 www-data
