@@ -14,12 +14,12 @@ final readonly class PrepareLeadDataTask
      */
     public function run(array $item): ?array
     {
-        $now = now()->format('Y-m-d H:i:s');
-
         $extId = $item['external_id'] ?? null;
         if (! $extId) {
             return null;
         }
+
+        $now = now()->format('Y-m-d H:i:s');
 
         return [
             'external_id' => $extId,

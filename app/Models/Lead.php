@@ -7,7 +7,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 
-#[Fillable('external_id',
+#[Fillable(['external_id',
     'first_name',
     'last_name',
     'phone',
@@ -20,7 +20,7 @@ use Illuminate\Database\Eloquent\Model;
     'status',
     'manager',
     'comment',
-    'next_contact_at', )]
+    'next_contact_at'])]
 final class Lead extends Model
 {
     /**
